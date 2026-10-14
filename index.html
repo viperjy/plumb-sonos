@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Plumb and Sonos</title>
+<style>
+  body { margin: 0; padding: 48px 24px; font-family: -apple-system, "Figtree", system-ui, sans-serif; background: #F7F2E9; color: #1F1B16; }
+  main { max-width: 560px; margin: 0 auto; }
+  h1 { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 32px; margin: 0 0 12px; }
+  p { font-size: 17px; line-height: 1.5; margin: 0 0 18px; }
+  code { display: block; font-size: 20px; word-break: break-all; padding: 16px 18px; border-radius: 14px; background: #E9E1D2; user-select: all; }
+  button { font: inherit; font-weight: 600; padding: 12px 22px; border: 0; border-radius: 22px; background: #1F1B16; color: #F7F2E9; }
+  .quiet { color: #5A4A38; font-size: 15px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Sonos sent you back to Plumb</h1>
+  <p id="lead">Copy the code below and paste it into Plumb, in Settings under Sonos, then touch Finish sign-in.</p>
+  <code id="code">…</code>
+  <p><button id="copy" type="button">Copy the code</button></p>
+  <p class="quiet">This page holds nothing of yours. The code works once and only with the keys in your Plumb.</p>
+</main>
+<script>
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var code = params.get('code');
+    var error = params.get('error');
+    var el = document.getElementById('code');
+    if (code) { el.textContent = code; }
+    else if (error) { el.textContent = 'Sonos refused: ' + error; document.getElementById('lead').textContent = 'Sonos did not sign you in. Try again from Plumb.'; }
+    else { el.textContent = 'No code arrived. Start the sign-in from Plumb.'; }
+    document.getElementById('copy').addEventListener('click', function () {
+      if (code && navigator.clipboard) { navigator.clipboard.writeText(code).catch(function () {}); }
+    });
+  })();
+</script>
+</body>
+</html>
